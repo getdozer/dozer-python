@@ -3,7 +3,7 @@
 BASEDIR=$(dirname "$0")
 cd ${BASEDIR}/../
 
-PROTO_DEST=.
+PROTO_DEST=./dozer
 
 mkdir -p ${PROTO_DEST}
 
