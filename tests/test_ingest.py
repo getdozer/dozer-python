@@ -1,7 +1,7 @@
 from tests import constants
-from ingest_pb2_grpc import IngestServiceStub
-from ingest_pb2 import IngestRequest
-from types_pb2 import Record
+from dozer.ingest_pb2_grpc import IngestServiceStub
+from dozer.ingest_pb2 import IngestRequest
+from dozer.types_pb2 import Record
 import grpc
 
 

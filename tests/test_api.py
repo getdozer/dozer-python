@@ -1,6 +1,6 @@
 from tests import constants
-from common_pb2_grpc import CommonGrpcServiceStub
-from common_pb2 import QueryRequest
+from dozer.common_pb2_grpc import CommonGrpcServiceStub
+from dozer.common_pb2 import QueryRequest
 import grpc
 
 
