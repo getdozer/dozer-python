@@ -1,0 +1,146 @@
+[
+  {
+    "name": "trips",
+    "schema": {
+      "fields": [
+        {
+          "typ": "String",
+          "name": "hvfhs_license_num",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "dispatching_base_num",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "originating_base_num",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "request_datetime",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "on_scene_datetime",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "pickup_datetime",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "dropoff_datetime",
+          "nullable": true
+        },
+        {
+          "typ": "Int",
+          "name": "PULocationID",
+          "nullable": true
+        },
+        {
+          "typ": "Int",
+          "name": "DOLocationID",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "trip_miles",
+          "nullable": true
+        },
+        {
+          "typ": "Int",
+          "name": "trip_time",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "base_passenger_fare",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "tolls",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "bcf",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "sales_tax",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "congestion_surcharge",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "airport_fee",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "tips",
+          "nullable": true
+        },
+        {
+          "typ": "Float",
+          "name": "driver_pay",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "shared_request_flag",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "shared_match_flag",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "access_a_ride_flag",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "wav_request_flag",
+          "nullable": true
+        },
+        {
+          "typ": "String",
+          "name": "wav_match_flag",
+          "nullable": true
+        }
+      ]
+    }
+  },
+  {
+    "name": "users",
+    "schema": {
+      "fields": [
+        {
+          "name": "user_id",
+          "typ": "Int",
+          "nullable": true
+        },
+        {
+          "name": "name",
+          "typ": "String",
+          "nullable": true
+        }
+      ]
+    }
+  }
+]

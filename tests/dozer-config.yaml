@@ -1,0 +1,33 @@
+app_name: dozer-ingest-users
+connections:
+  - config: !Grpc
+      schemas: !Path "tests/trips.json"
+    name: ingest
+
+api:
+  rest:
+    port: 8089
+  grpc:
+    port: 50056
+sources:
+  - name: trips
+    table_name: trips
+    connection: !Ref ingest
+    columns:
+  - name: users
+    table_name: users
+    connection: !Ref ingest
+    columns:
+
+endpoints:
+  - name: trips
+    path: /trips
+    table_name: trips
+    index:
+      primary_key:
+
+  - name: users
+    path: /users
+    table_name: users
+    index:
+      primary_key:

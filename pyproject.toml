@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dozer"
-version = "0.1.8"
+version = "0.1.10"
 description = "Python wrapper for the Dozer API"
 authors = ["Dozer Team <api@getdozer.io>"]
 license = "MIT"

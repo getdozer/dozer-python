@@ -24,6 +24,16 @@ class IngestServiceStub(object):
             request_serializer=ingest__pb2.IngestRequest.SerializeToString,
             response_deserializer=ingest__pb2.IngestResponse.FromString,
         )
+        self.ingest_arrow = channel.unary_unary(
+            '/dozer.ingest.IngestService/ingest_arrow',
+            request_serializer=ingest__pb2.IngestArrowRequest.SerializeToString,
+            response_deserializer=ingest__pb2.IngestResponse.FromString,
+        )
+        self.ingest_arrow_stream = channel.stream_unary(
+            '/dozer.ingest.IngestService/ingest_arrow_stream',
+            request_serializer=ingest__pb2.IngestArrowRequest.SerializeToString,
+            response_deserializer=ingest__pb2.IngestResponse.FromString,
+        )
 
 
 class IngestServiceServicer(object):
@@ -41,6 +51,18 @@ class IngestServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ingest_arrow(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ingest_arrow_stream(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_IngestServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -52,6 +74,16 @@ def add_IngestServiceServicer_to_server(servicer, server):
         'ingest_stream': grpc.stream_unary_rpc_method_handler(
             servicer.ingest_stream,
             request_deserializer=ingest__pb2.IngestRequest.FromString,
+            response_serializer=ingest__pb2.IngestResponse.SerializeToString,
+        ),
+        'ingest_arrow': grpc.unary_unary_rpc_method_handler(
+            servicer.ingest_arrow,
+            request_deserializer=ingest__pb2.IngestArrowRequest.FromString,
+            response_serializer=ingest__pb2.IngestResponse.SerializeToString,
+        ),
+        'ingest_arrow_stream': grpc.stream_unary_rpc_method_handler(
+            servicer.ingest_arrow_stream,
+            request_deserializer=ingest__pb2.IngestArrowRequest.FromString,
             response_serializer=ingest__pb2.IngestResponse.SerializeToString,
         ),
     }
@@ -95,6 +127,40 @@ class IngestService(object):
                       metadata=None):
         return grpc.experimental.stream_unary(request_iterator, target, '/dozer.ingest.IngestService/ingest_stream',
                                               ingest__pb2.IngestRequest.SerializeToString,
+                                              ingest__pb2.IngestResponse.FromString,
+                                              options, channel_credentials,
+                                              insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ingest_arrow(request,
+                     target,
+                     options=(),
+                     channel_credentials=None,
+                     call_credentials=None,
+                     insecure=False,
+                     compression=None,
+                     wait_for_ready=None,
+                     timeout=None,
+                     metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/dozer.ingest.IngestService/ingest_arrow',
+                                             ingest__pb2.IngestArrowRequest.SerializeToString,
+                                             ingest__pb2.IngestResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ingest_arrow_stream(request_iterator,
+                            target,
+                            options=(),
+                            channel_credentials=None,
+                            call_credentials=None,
+                            insecure=False,
+                            compression=None,
+                            wait_for_ready=None,
+                            timeout=None,
+                            metadata=None):
+        return grpc.experimental.stream_unary(request_iterator, target, '/dozer.ingest.IngestService/ingest_arrow_stream',
+                                              ingest__pb2.IngestArrowRequest.SerializeToString,
                                               ingest__pb2.IngestResponse.FromString,
                                               options, channel_credentials,
                                               insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
