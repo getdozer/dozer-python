@@ -19,6 +19,7 @@ tqdm = "^4.65.0"
 grpcio-tools = "^1.51.3"
 autopep8 = "^2.0.1"
 pytest = "^7.2.1"
+coverage = "^7.2.1"
 
 
 [build-system]

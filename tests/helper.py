@@ -6,6 +6,7 @@ from dozer.ingest import IngestClient
 import pytest
 
 DOZER_INGEST_URL = "0.0.0.0:7001"
+DOZER_INGEST_ARROW_URL = "0.0.0.0:7005"
 DOZER_API_URL = "0.0.0.0:7003"
 
 # Run Dozer in background
@@ -32,6 +33,11 @@ def trips_client():
 @pytest.fixture
 def ingestion_client():
     return IngestClient(url=DOZER_INGEST_URL)
+
+
+@pytest.fixture
+def arrow_ingestion_client():
+    return IngestClient(url=DOZER_INGEST_ARROW_URL)
 
 
 def server():

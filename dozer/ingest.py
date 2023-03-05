@@ -93,4 +93,4 @@ class IngestClient:
                 pbar.close()
         print("Ingesting via stream in Arrow Format...")
 
-        return self.ingestor.ingest_stream(get_messages(seq_no))
+        return self.ingestor.ingest_arrow_stream(get_messages(seq_no))

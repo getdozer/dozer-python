@@ -26,6 +26,20 @@
 ## Overview
 This repository is a python wrapper over gRPC APIs that are automatically when you run [Dozer](https://github.com/getdozer/dozer).
 
+## Installation
+
+```bash
+poetry add git+ssh://git@github.com:getdozer/dozer-python.git#main
+
+# or 
+pip install getdozer/dozer-python
+```
+## Dependencies
+
+- [Dozer](https://github.com/getdozer/dozer)
+- [Poetry](https://python-poetry.org/docs/)
+
+
 ### Querying
 
 Intialize Users Endpoint
@@ -88,18 +102,7 @@ Ingest in Arrow format
 
 Check out our [Docs](https://getdozer.io/docs/dozer/) for more information.
 
-## Installation
-
-```bash
-pip install getdozer/dozer-python
-```
-## Dependencies
-
-- [Dozer](https://github.com/getdozer/dozer)
-- [Poetry](https://python-poetry.org/docs/)
-
-
-Testing
+### Testing
 ```
 pytest
 ```

@@ -4,6 +4,11 @@ connections:
       schemas: !Path "tests/trips.json"
       port: 7001
     name: ingest
+  - config: !Grpc
+      adapter: arrow
+      schemas: !Path "tests/trips_arrow.json"
+      port: 7005
+    name: ingest_arrow
 
 api:
   rest:
@@ -17,6 +22,10 @@ sources:
     table_name: trips
     connection: !Ref ingest
     columns:
+  - name: trips_arrow
+    table_name: trips_arrow
+    connection: !Ref ingest_arrow
+    columns:
   - name: users
     table_name: users
     connection: !Ref ingest
@@ -26,6 +35,11 @@ endpoints:
   - name: trips
     path: /trips
     table_name: trips
+    index:
+      primary_key:
+  - name: trips_arrow
+    path: /trips_arrow
+    table_name: trips_arrow
     index:
       primary_key:
 
