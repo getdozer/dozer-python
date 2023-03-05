@@ -2,13 +2,16 @@ app_name: dozer-ingest-users
 connections:
   - config: !Grpc
       schemas: !Path "tests/trips.json"
+      port: 7001
     name: ingest
 
 api:
   rest:
-    port: 8089
+    port: 7002
   grpc:
-    port: 50056
+    port: 7003
+  app_grpc:
+    port: 7004
 sources:
   - name: trips
     table_name: trips

@@ -10,6 +10,10 @@ readme = "README.md"
 python = "^3.9"
 grpcio = "^1.51.3"
 protobuf = "^4.22.0"
+pyarrow = "^11.0.0"
+grpcio-reflection = "^1.51.3"
+polars = "^0.16.10"
+tqdm = "^4.65.0"
 
 [tool.poetry.group.dev.dependencies]
 grpcio-tools = "^1.51.3"
