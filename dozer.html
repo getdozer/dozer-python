@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dozer package &mdash; Dozer Python Client MIT documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Dozer Python Client
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">dozer package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-dozer.api">dozer.api module</a><ul>
+<li><a class="reference internal" href="#dozer.api.ApiClient"><code class="docutils literal notranslate"><span class="pre">ApiClient</span></code></a><ul>
+<li><a class="reference internal" href="#dozer.api.ApiClient.count"><code class="docutils literal notranslate"><span class="pre">ApiClient.count()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.api.ApiClient.describe"><code class="docutils literal notranslate"><span class="pre">ApiClient.describe()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.api.ApiClient.health"><code class="docutils literal notranslate"><span class="pre">ApiClient.health()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.api.ApiClient.on_event"><code class="docutils literal notranslate"><span class="pre">ApiClient.on_event()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.api.ApiClient.query"><code class="docutils literal notranslate"><span class="pre">ApiClient.query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-dozer.helper">dozer.helper module</a><ul>
+<li><a class="reference internal" href="#dozer.helper.describe_services"><code class="docutils literal notranslate"><span class="pre">describe_services()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.get_arrow_schema"><code class="docutils literal notranslate"><span class="pre">get_arrow_schema()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.get_bytes"><code class="docutils literal notranslate"><span class="pre">get_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.get_desc_pool"><code class="docutils literal notranslate"><span class="pre">get_desc_pool()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.get_schema"><code class="docutils literal notranslate"><span class="pre">get_schema()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.map_arrow_df"><code class="docutils literal notranslate"><span class="pre">map_arrow_df()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.map_record"><code class="docutils literal notranslate"><span class="pre">map_record()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.helper.map_value"><code class="docutils literal notranslate"><span class="pre">map_value()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-dozer.ingest">dozer.ingest module</a><ul>
+<li><a class="reference internal" href="#dozer.ingest.IngestClient"><code class="docutils literal notranslate"><span class="pre">IngestClient</span></code></a><ul>
+<li><a class="reference internal" href="#dozer.ingest.IngestClient.describe"><code class="docutils literal notranslate"><span class="pre">IngestClient.describe()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.ingest.IngestClient.ingest_df"><code class="docutils literal notranslate"><span class="pre">IngestClient.ingest_df()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.ingest.IngestClient.ingest_df_arrow"><code class="docutils literal notranslate"><span class="pre">IngestClient.ingest_df_arrow()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.ingest.IngestClient.ingest_raw"><code class="docutils literal notranslate"><span class="pre">IngestClient.ingest_raw()</span></code></a></li>
+<li><a class="reference internal" href="#dozer.ingest.IngestClient.ingest_raw_stream"><code class="docutils literal notranslate"><span class="pre">IngestClient.ingest_raw_stream()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-dozer">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dozer Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">dozer package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dozer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dozer-package">
+<h1>dozer package<a class="headerlink" href="#dozer-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-dozer.api">
+<span id="dozer-api-module"></span><h2>dozer.api module<a class="headerlink" href="#module-dozer.api" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dozer.api.ApiClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dozer.api.</span></span><span class="sig-name descname"><span class="pre">ApiClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.0.0.0:50051'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/api.html#ApiClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.api.ApiClient" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.api.ApiClient.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/api.html#ApiClient.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.api.ApiClient.count" title="Permalink to this definition"></a></dt>
+<dd><p>Counts the number of records in Dozer cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>QueryRequest</em>) – Optionally accepts a filter</p></li>
+<li><p><strong>records</strong> (<em>to count only a subset of</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.api.ApiClient.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/api.html#ApiClient.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.api.ApiClient.describe" title="Permalink to this definition"></a></dt>
+<dd><p>Prints out the available gRPC services and methods</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.api.ApiClient.health">
+<span class="sig-name descname"><span class="pre">health</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/api.html#ApiClient.health"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.api.ApiClient.health" title="Permalink to this definition"></a></dt>
+<dd><p>Checks the health of the Dozer Common Server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.api.ApiClient.on_event">
+<span class="sig-name descname"><span class="pre">on_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/api.html#ApiClient.on_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.api.ApiClient.on_event" title="Permalink to this definition"></a></dt>
+<dd><p>Subscribes to events from Dozer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>OnEventRequest</em>) – Optionally accepts a filter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.api.ApiClient.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/api.html#ApiClient.query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.api.ApiClient.query" title="Permalink to this definition"></a></dt>
+<dd><p>Queries the Dozer cache for records. Response is in the common format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>QueryRequest</em>) – Optionally accepts a filter</p></li>
+<li><p><strong>records</strong> (<em>to query only a subset of</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-dozer.helper">
+<span id="dozer-helper-module"></span><h2>dozer.helper module<a class="headerlink" href="#module-dozer.helper" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.describe_services">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">describe_services</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#describe_services"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.describe_services" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.get_arrow_schema">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">get_arrow_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#get_arrow_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.get_arrow_schema" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.get_bytes">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">get_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#get_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.get_bytes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.get_desc_pool">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">get_desc_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#get_desc_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.get_desc_pool" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.get_schema">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.get_schema" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.map_arrow_df">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">map_arrow_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#map_arrow_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.map_arrow_df" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.map_record">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">map_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#map_record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.map_record" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dozer.helper.map_value">
+<span class="sig-prename descclassname"><span class="pre">dozer.helper.</span></span><span class="sig-name descname"><span class="pre">map_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/helper.html#map_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.helper.map_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-dozer.ingest">
+<span id="dozer-ingest-module"></span><h2>dozer.ingest module<a class="headerlink" href="#module-dozer.ingest" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dozer.ingest.IngestClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dozer.ingest.</span></span><span class="sig-name descname"><span class="pre">IngestClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.0.0.0:8085'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/ingest.html#IngestClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.ingest.IngestClient" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.ingest.IngestClient.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/ingest.html#IngestClient.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.ingest.IngestClient.describe" title="Permalink to this definition"></a></dt>
+<dd><p>Prints out the available gRPC services and methods</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.ingest.IngestClient.ingest_df">
+<span class="sig-name descname"><span class="pre">ingest_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_no</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/ingest.html#IngestClient.ingest_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.ingest.IngestClient.ingest_df" title="Permalink to this definition"></a></dt>
+<dd><p>Ingest a pandas dataframe into Dozer using ingest stream
+:param schema_name: Schema name
+:type schema_name: str
+:param df: Pandas DataFrame
+:type df: DataFrame
+:param seq_no: Sequence number. Defaults to 1.
+:type seq_no: int, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.ingest.IngestClient.ingest_df_arrow">
+<span class="sig-name descname"><span class="pre">ingest_df_arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_no</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/ingest.html#IngestClient.ingest_df_arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.ingest.IngestClient.ingest_df_arrow" title="Permalink to this definition"></a></dt>
+<dd><p>Ingest a dataframe into Dozer in Arrow Format
+:param schema_name: Schema name
+:type schema_name: str
+:param df: Pandas DataFrame
+:type df: DataFrame
+:param batch_size: Batch Size to be used for ingestion.</p>
+<blockquote>
+<div><p>Defaults to BATCH_SIZE.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seq_no</strong> (<em>int</em><em>, </em><em>optional</em>) – Sequence number. Defaults to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.ingest.IngestClient.ingest_raw">
+<span class="sig-name descname"><span class="pre">ingest_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/ingest.html#IngestClient.ingest_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.ingest.IngestClient.ingest_raw" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Ingest a record in Common Format into Dozer</dt><dd><blockquote>
+<div><dl class="simple">
+<dt>user = IngestRequest(</dt><dd><p>schema_name=”users”,
+typ=0,
+old=None,
+new=Record(values=[Value(int_value=1), Value(string_value=”vivek”)]),
+seq_no=1</p>
+</dd>
+</dl>
+<p>)
+ingestor.ingest(user)</p>
+</div></blockquote>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>IngestRequest</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dozer.ingest.IngestClient.ingest_raw_stream">
+<span class="sig-name descname"><span class="pre">ingest_raw_stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dozer/ingest.html#IngestClient.ingest_raw_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dozer.ingest.IngestClient.ingest_raw_stream" title="Permalink to this definition"></a></dt>
+<dd><p>Ingest a stream in Common Format into Dozer
+:param generator: Generator function that yields IngestRequest</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-dozer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dozer" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Dozer Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

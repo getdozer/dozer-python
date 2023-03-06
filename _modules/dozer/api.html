@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dozer.api &mdash; Dozer Python Client MIT documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Dozer Python Client
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Dozer Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dozer.api</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dozer.api</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
+<span class="kn">from</span> <span class="nn">dozer.helper</span> <span class="kn">import</span> <span class="n">describe_services</span>
+<span class="kn">from</span> <span class="nn">dozer.health_pb2_grpc</span> <span class="kn">import</span> <span class="n">HealthGrpcServiceStub</span>
+<span class="kn">from</span> <span class="nn">dozer.common_pb2_grpc</span> <span class="kn">import</span> <span class="n">CommonGrpcServiceStub</span>
+<span class="kn">from</span> <span class="nn">dozer.common_pb2</span> <span class="kn">import</span> <span class="n">QueryRequest</span><span class="p">,</span> <span class="n">OnEventRequest</span>
+<span class="kn">from</span> <span class="nn">dozer.health_pb2</span> <span class="kn">import</span> <span class="n">HealthCheckRequest</span>
+
+<span class="n">DOZER_API_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DOZER_API_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;0.0.0.0:50051&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ApiClient"><a class="viewcode-back" href="../../dozer.html#dozer.api.ApiClient">[docs]</a><span class="k">class</span> <span class="nc">ApiClient</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">DOZER_API_URL</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Common API client for Dozer</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            endpoint (str): Endpoint to connect to. </span>
+<span class="sd">            url (str, optional): Dozer gRPC URL. Defaults to Env variable DOZER_API_URL or `0.0.0.0:50051`.</span>
+<span class="sd">            secure (bool, optional): Intialize a secure channel. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">secure</span><span class="p">:</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">secure_channel</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">CommonGrpcServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ApiClient.describe"><a class="viewcode-back" href="../../dozer.html#dozer.api.ApiClient.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints out the available gRPC services and methods</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">describe_services</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ApiClient.health"><a class="viewcode-back" href="../../dozer.html#dozer.api.ApiClient.health">[docs]</a>    <span class="k">def</span> <span class="nf">health</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks the health of the Dozer Common Server</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">health_client</span> <span class="o">=</span> <span class="n">HealthGrpcServiceStub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">health_client</span><span class="o">.</span><span class="n">healthCheck</span><span class="p">(</span><span class="n">HealthCheckRequest</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ApiClient.count"><a class="viewcode-back" href="../../dozer.html#dozer.api.ApiClient.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="p">{}):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Counts the number of records in Dozer cache. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (QueryRequest): Optionally accepts a filter </span>
+<span class="sd">            to count only a subset of records</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_req</span> <span class="o">=</span> <span class="n">QueryRequest</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">_req</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">_req</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ApiClient.query"><a class="viewcode-back" href="../../dozer.html#dozer.api.ApiClient.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="p">{}):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Queries the Dozer cache for records. Response is in the common format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (QueryRequest): Optionally accepts a filter </span>
+<span class="sd">            to query only a subset of records</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_req</span> <span class="o">=</span> <span class="n">QueryRequest</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">_req</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_req</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ApiClient.on_event"><a class="viewcode-back" href="../../dozer.html#dozer.api.ApiClient.on_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="p">{}):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribes to events from Dozer. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (OnEventRequest): Optionally accepts a filter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_req</span> <span class="o">=</span> <span class="n">OnEventRequest</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">_req</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">OnEvent</span><span class="p">(</span><span class="n">_req</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Dozer Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

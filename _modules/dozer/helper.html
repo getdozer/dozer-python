@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dozer.helper &mdash; Dozer Python Client MIT documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Dozer Python Client
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Dozer Python Client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dozer.helper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dozer.helper</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">grpc_reflection.v1alpha.proto_reflection_descriptor_database</span> <span class="kn">import</span> <span class="n">ProtoReflectionDescriptorDatabase</span>
+<span class="kn">from</span> <span class="nn">google.protobuf.descriptor_pool</span> <span class="kn">import</span> <span class="n">DescriptorPool</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">from</span> <span class="nn">dozer.ingest_pb2</span> <span class="kn">import</span> <span class="n">IngestRequest</span><span class="p">,</span> <span class="n">IngestArrowRequest</span>
+<span class="kn">from</span> <span class="nn">dozer.types_pb2</span> <span class="kn">import</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Value</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<div class="viewcode-block" id="describe_services"><a class="viewcode-back" href="../../dozer.html#dozer.helper.describe_services">[docs]</a><span class="k">def</span> <span class="nf">describe_services</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="c1"># https://github.com/grpc/grpc/blob/master/doc/python/server_reflection.md</span>
+
+    <span class="n">reflection_db</span> <span class="o">=</span> <span class="n">ProtoReflectionDescriptorDatabase</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+    <span class="n">desc_pool</span> <span class="o">=</span> <span class="n">DescriptorPool</span><span class="p">(</span><span class="n">reflection_db</span><span class="p">)</span>
+    <span class="n">services</span> <span class="o">=</span> <span class="n">reflection_db</span><span class="o">.</span><span class="n">get_services</span><span class="p">()</span>
+
+    <span class="n">service_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">services</span><span class="p">:</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Methods: &quot;</span><span class="p">)</span>
+        <span class="n">service_desc</span> <span class="o">=</span> <span class="n">desc_pool</span><span class="o">.</span><span class="n">FindServiceByName</span><span class="p">(</span>
+            <span class="n">s</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">service_desc</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="n">methods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">service_dict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">methods</span>
+    <span class="k">return</span> <span class="n">service_dict</span></div>
+
+
+<div class="viewcode-block" id="get_desc_pool"><a class="viewcode-back" href="../../dozer.html#dozer.helper.get_desc_pool">[docs]</a><span class="k">def</span> <span class="nf">get_desc_pool</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="n">reflection_db</span> <span class="o">=</span> <span class="n">ProtoReflectionDescriptorDatabase</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+    <span class="n">desc_pool</span> <span class="o">=</span> <span class="n">DescriptorPool</span><span class="p">(</span><span class="n">reflection_db</span><span class="p">)</span>
+    <span class="n">desc_pool</span></div>
+
+
+<div class="viewcode-block" id="get_arrow_schema"><a class="viewcode-back" href="../../dozer.html#dozer.helper.get_arrow_schema">[docs]</a><span class="k">def</span> <span class="nf">get_arrow_schema</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">):</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">typ</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">):</span>
+        <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;dict_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;dict_is_ordered&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Datetime</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;data_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Timestamp&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;data_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+
+        <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">schema_name</span><span class="p">,</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="p">,</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="get_schema"><a class="viewcode-back" href="../../dozer.html#dozer.helper.get_schema">[docs]</a><span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">):</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">typ</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">):</span>
+        <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">UInt64</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">UInt32</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">UInt64</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;UInt&#39;</span>
+        <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Int64</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Int32</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Int&#39;</span>
+        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Float64</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Float32</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Float&#39;</span>
+        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Boolean</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Boolean&#39;</span>
+        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Utf8</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span>
+        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Date</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Date&#39;</span>
+        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Datetime</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span>
+        <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Time</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Binary</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Binary&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;typ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Text&#39;</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">schema_name</span><span class="p">,</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="n">fields</span>
+        <span class="p">}</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="map_value"><a class="viewcode-back" href="../../dozer.html#dozer.helper.map_value">[docs]</a><span class="k">def</span> <span class="nf">map_value</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">UInt64</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">UInt32</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">UInt64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">uint_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Int64</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Int32</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">int_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Float64</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Float32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">float_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Boolean</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">bool_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Utf8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">string_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Date</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">date_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Datetime</span><span class="p">:</span>
+        <span class="c1"># return Value(timestamp_value=col)</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">string_value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Time</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">string_value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">pl</span><span class="o">.</span><span class="n">Binary</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">bytes_value</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="map_record"><a class="viewcode-back" href="../../dozer.html#dozer.helper.map_record">[docs]</a><span class="k">def</span> <span class="nf">map_record</span><span class="p">(</span><span class="n">schema_name</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">),</span> <span class="s2">&quot;Row and types must be the same length&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">map_value</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+    <span class="n">rec</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">IngestRequest</span><span class="p">(</span>
+        <span class="n">schema_name</span><span class="o">=</span><span class="n">schema_name</span><span class="p">,</span>
+        <span class="n">typ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">old</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">new</span><span class="o">=</span><span class="n">rec</span><span class="p">,</span>
+        <span class="n">seq_no</span><span class="o">=</span><span class="n">idx</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="map_arrow_df"><a class="viewcode-back" href="../../dozer.html#dozer.helper.map_arrow_df">[docs]</a><span class="k">def</span> <span class="nf">map_arrow_df</span><span class="p">(</span><span class="n">schema_name</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">get_bytes</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">IngestArrowRequest</span><span class="p">(</span>
+        <span class="n">schema_name</span><span class="o">=</span><span class="n">schema_name</span><span class="p">,</span>
+        <span class="n">records</span><span class="o">=</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">seq_no</span><span class="o">=</span><span class="n">idx</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_bytes"><a class="viewcode-back" href="../../dozer.html#dozer.helper.get_bytes">[docs]</a><span class="k">def</span> <span class="nf">get_bytes</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="o">.</span><span class="n">from_pylist</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_dicts</span><span class="p">())</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">BufferOutputStream</span><span class="p">()</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">new_stream</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">write_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">sink</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">to_pybytes</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Dozer Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
