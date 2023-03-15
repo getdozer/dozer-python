@@ -43,10 +43,13 @@ pip install getdozer/dozer-python
 ### Querying
 
 Intialize Users Endpoint
-```
+```python
 api_client = ApiClient("users")
 
 api_client.query()
+
+# Query using $limit, $order_by, $filter
+api_client.query({"$limit": 1})
 
 #Count
 api_client.count()
@@ -54,7 +57,7 @@ api_client.count()
 
 
 gRPC methods
-```
+```python
 api_client.describe()
 
 #Health
@@ -72,18 +75,18 @@ ingestion_client = IngestClient()
 
 Ingest a data frame
 
-```
+```python
 df = pl.read_parquet('tests/trips_small.parquet')
 ingestion_client.ingest_df('trips', df, seq_no=1)
 ```
 
 Use [Arrow Format](https://github.com/apache/arrow) for ingestion
-```
+```python
 ingestion_client.ingest_df_arrow('trips', df, seq_no=1)
 ```
 
 Ingest raw records
-```
+```python
 from dozer.ingest_pb2 import IngestRequest
 from dozer.types_pb2 import Record, Value
 
@@ -99,9 +102,7 @@ ingestor.ingest(user)
 
 Ingest in Arrow format
 
-
 Check out our [Docs](https://getdozer.io/docs/dozer/) for more information.
-
 ### Testing
 ```
 pytest
