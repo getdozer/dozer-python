@@ -23,8 +23,8 @@ def test_ingest_df(dozer_server, ingestion_client):
     assert res is not None
 
 
-def test_ingest_df_arrow(dozer_server, arrow_ingestion_client):
+def test_ingest_df_arrow(arrow_ingestion_client):
     df = pl.read_parquet('tests/trips_small.parquet')
     res = arrow_ingestion_client.ingest_df_arrow(
-        'trips', df, batch_size=5, seq_no=1)
+        'trips_arrow', df, batch_size=5, seq_no=1)
     assert res is not None

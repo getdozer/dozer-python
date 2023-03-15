@@ -1,3 +1,4 @@
+import io
 from grpc_reflection.v1alpha.proto_reflection_descriptor_database import ProtoReflectionDescriptorDatabase
 from google.protobuf.descriptor_pool import DescriptorPool
 import polars as pl
@@ -8,7 +9,7 @@ import pyarrow as pa
 import json
 
 
-def describe_services(channel):
+def describe_services(channel) -> dict:
     # https://github.com/grpc/grpc/blob/master/doc/python/server_reflection.md
 
     reflection_db = ProtoReflectionDescriptorDatabase(channel)
@@ -28,13 +29,12 @@ def describe_services(channel):
     return service_dict
 
 
-def get_desc_pool(channel):
+def get_desc_pool(channel) -> DescriptorPool:
     reflection_db = ProtoReflectionDescriptorDatabase(channel)
-    desc_pool = DescriptorPool(reflection_db)
-    desc_pool
+    return DescriptorPool(reflection_db)
 
 
-def get_arrow_schema(df, schema_name):
+def get_arrow_schema(df, schema_name) -> dict:
     fields = []
     for (name, typ) in zip(df.columns, df.dtypes):
         dict = {
@@ -59,7 +59,7 @@ def get_arrow_schema(df, schema_name):
     }
 
 
-def get_schema(df, schema_name):
+def get_schema(df, schema_name) -> dict:
     fields = []
     for (name, typ) in zip(df.columns, df.dtypes):
         dict = {}
@@ -96,7 +96,7 @@ def get_schema(df, schema_name):
     }
 
 
-def map_value(col, typ):
+def map_value(col, typ) -> Value:
 
     if col == None or str(col).strip() == "":
         return Value()
@@ -124,7 +124,7 @@ def map_value(col, typ):
         return Value()
 
 
-def map_record(schema_name, row, types, idx):
+def map_record(schema_name: str, row: list, types, idx) -> Record:
     values = []
     assert len(row) == len(types), "Row and types must be the same length"
     for i in range(len(row)):
@@ -141,8 +141,7 @@ def map_record(schema_name, row, types, idx):
     )
 
 
-def map_arrow_df(schema_name, df, idx):
-    values = []
+def map_arrow_df(schema_name: str, df: pl.DataFrame, idx: int) -> IngestArrowRequest:
     values = get_bytes(df)
 
     return IngestArrowRequest(
@@ -152,11 +151,13 @@ def map_arrow_df(schema_name, df, idx):
     )
 
 
-def get_bytes(df):
-    batch = pa.RecordBatch.from_pylist(df.to_dicts())
+def get_bytes(df: pl.DataFrame):
+
+    batches = df.to_arrow().to_batches()
     sink = pa.BufferOutputStream()
-    writer = pa.ipc.new_stream(sink, batch.schema)
-    writer.write_batch(batch)
-    writer.close()
+    for batch in batches:
+        writer = pa.ipc.new_stream(sink, batch.schema)
+        writer.write_batch(batch)
+        writer.close()
     buf = sink.getvalue()
     return buf.to_pybytes()
