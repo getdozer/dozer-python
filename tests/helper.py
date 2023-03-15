@@ -21,24 +21,24 @@ def dozer_server():
 
 
 @pytest.fixture
-def api_client():
+def api_client() -> ApiClient:
     return ApiClient("users", url=DOZER_API_URL)
 
 
 @pytest.fixture
-def trips_client():
+def trips_client() -> ApiClient:
     return ApiClient("trips", url=DOZER_API_URL)
 
 
 @pytest.fixture
-def ingestion_client():
+def ingestion_client() -> IngestClient:
     return IngestClient(url=DOZER_INGEST_URL)
 
 
 @pytest.fixture
-def arrow_ingestion_client():
+def arrow_ingestion_client() -> IngestClient:
     return IngestClient(url=DOZER_INGEST_ARROW_URL)
 
 
 def server():
-    subprocess.run(["dozer", "-c", "tests/dozer-config.yaml"])
+    return subprocess.run(["dozer", "-c", "tests/dozer-config.yaml"])

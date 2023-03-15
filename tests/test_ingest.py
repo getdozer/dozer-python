@@ -1,10 +1,11 @@
+from dozer.ingest import IngestClient
 from tests.helper import dozer_server, ingestion_client, arrow_ingestion_client
 from dozer.ingest_pb2 import IngestRequest
 from dozer.types_pb2 import Record, Value
 import polars as pl
 
 
-def test_ingest(dozer_server, ingestion_client):
+def test_ingest(dozer_server, ingestion_client: IngestClient):
     user = IngestRequest(
         schema_name="users",
         typ=0,
