@@ -59,7 +59,8 @@ class ApiClient:
             Keys could be 
                 `$filter`: `dict` eg: `{"name": "John"}` or `{"id": { "$gt": 1}}`  
                 `$limit`:  `int`
-                `$offset`: `int`,
+                `$skip`: `int`,
+                '$after`: `int`, cursor to start from. `$skip` and `$after` cannot be used in the same query
                 `$order_by`: `dict` eg: `{"name": "asc"}` or `{"id": "desc"}`
             Defaults to {}.
 
@@ -80,7 +81,8 @@ class ApiClient:
             Keys could be 
                 `$filter`: `dict` eg: `{"name": "John"}` or `{"id": { "$gt": 1}}`  
                 `$limit`:  `int`
-                `$offset`: `int`,
+                `$skip`: `int`,
+                '$after`: `int`, cursor to start from. `$skip` and `$after` cannot be used in the same query
                 `$order_by`: `dict` eg: `{"name": "asc"}` or `{"id": "desc"}`
             Defaults to {}.
 
@@ -112,17 +114,19 @@ class ApiClient:
             Keys could be 
                 `$filter`: `dict` eg: `{"name": "John"}` or `{"id": { "$gt": 1}}`  
                 `$limit`:  `int`
-                `$offset`: `int`,
+                `$skip`: `int`,
+                '$after`: `int`, cursor to start from. `$skip` and `$after` cannot be used in the same query
                 `$order_by`: `dict` eg: `{"name": "asc"}` or `{"id": "desc"}`
             Defaults to {}.
         Returns:
             QueryRequest: QueryRequest object
         """
-        if query.__len__ == 0:
-            query_str = ''
-        else:
-            data = {}
-            for key, value in query.items():
-                data[key] = value
-            query_str = json.dumps(data)
+        if query is None or len(query) == 0:
+            query = {}
+
+        data = {}
+        for key, value in query.items():
+            data[key] = value
+        query_str = json.dumps(data)
+
         return QueryRequest(endpoint=self.endpoint, query=query_str)
