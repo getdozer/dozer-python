@@ -17,14 +17,15 @@ DOZER_API_URL = "0.0.0.0:7003"
 @pytest.fixture(autouse=True, scope="session")
 def dozer_server():
     which_dozer = shutil.which("dozer")
-    proc = subprocess.Popen([which_dozer, "-c", "tests/dozer-config.yaml"], stdout=subprocess.PIPE)
+    p = subprocess.Popen([which_dozer, "-c", "tests/dozer-config.yaml"], stdout=subprocess.PIPE)
     while True:
-        line = proc.stdout.readline()
+        line = p.stdout.readline()
         if b'[api] Serving' in line:
             break
     sleep(0.1)
     yield
-    proc.terminate()
+    p.terminate()
+    p.kill()
 
 
 @pytest.fixture
