@@ -22,6 +22,8 @@ def dozer_server():
         line = p.stdout.readline()
         if b'[api] Serving' in line:
             break
+        if b'ERROR' in line:
+            exit(1)
     sleep(0.1)
     yield
     p.terminate()
