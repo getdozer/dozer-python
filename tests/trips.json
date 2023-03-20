@@ -1,6 +1,5 @@
-[
-  {
-    "name": "trips",
+{
+  "trips": {
     "schema": {
       "fields": [
         {
@@ -126,8 +125,7 @@
       ]
     }
   },
-  {
-    "name": "users",
+  "users": {
     "schema": {
       "fields": [
         {
@@ -143,4 +141,4 @@
       ]
     }
   }
-]
+}
