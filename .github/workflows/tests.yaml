@@ -40,7 +40,7 @@ jobs:
 
       - name: Install Dozer
         run: |
-          curl -sLO https://github.com/getdozer/dozer/releases/download/latest/dozer-linux-x86_64.deb && sudo dpkg -i dozer-linux-x86_64.deb
+          curl -sLO https://github.com/getdozer/dozer/releases/download/v0.1.12/dozer-linux-x86_64.deb && sudo dpkg -i dozer-linux-x86_64.deb
 
       - name: Run tests
         run: |
