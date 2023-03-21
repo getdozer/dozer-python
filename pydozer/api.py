@@ -1,24 +1,24 @@
 import json
 import os
 import grpc
-from dozer.helper import describe_services
-from dozer.health_pb2_grpc import HealthGrpcServiceStub
-from dozer.common_pb2_grpc import CommonGrpcServiceStub
-from dozer.common_pb2 import QueryRequest, OnEventRequest, QueryResponse, CountResponse
-from dozer.health_pb2 import HealthCheckRequest, HealthCheckResponse
+from pydozer.helper import describe_services
+from pydozer.health_pb2_grpc import HealthGrpcServiceStub
+from pydozer.common_pb2_grpc import CommonGrpcServiceStub
+from pydozer.common_pb2 import QueryRequest, OnEventRequest, QueryResponse, CountResponse
+from pydozer.health_pb2 import HealthCheckRequest, HealthCheckResponse
 
 DOZER_API_URL = os.getenv("DOZER_API_URL", "0.0.0.0:50051")
 
 
 class ApiClient:
-    def __init__(self, endpoint, url=DOZER_API_URL, secure=False):
-        """Common API client for Dozer
+    """Common API client for Dozer
 
-        Args:
-            endpoint (str): Endpoint to connect to.
-            url (str, optional): Dozer gRPC URL. Defaults to Env variable DOZER_API_URL or `0.0.0.0:50051`.
-            secure (bool, optional): Intialize a secure channel. Defaults to False.
-        """
+    Args:
+        endpoint (str): Endpoint to connect to.
+        url (str, optional): Dozer gRPC URL. Defaults to Env variable DOZER_API_URL or `0.0.0.0:50051`.
+        secure (bool, optional): Intialize a secure channel. Defaults to False.
+    """
+    def __init__(self, endpoint, url=DOZER_API_URL, secure=False):
         if secure:
             channel = grpc.secure_channel(url)
         else:
@@ -41,7 +41,7 @@ class ApiClient:
 
         Args:
             service (str, optional): Name of the service. Defaults to None.
-                                    Eg: `dozer.generated.trips.Trips` for endpoint `trips`
+                                    Eg: `pydozer.generated.trips.Trips` for endpoint `trips`
 
         Returns:
             HealthCheckResponse: _description_
