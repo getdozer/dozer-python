@@ -1,15 +1,15 @@
-from dozer.api import ApiClient
+from pydozer.api import ApiClient
 from tests.helper import api_client, dozer_server
-from dozer.ingest import IngestClient
+from pydozer.ingest import IngestClient
 from tests.helper import dozer_server, ingestion_client, arrow_ingestion_client
-from dozer.ingest_pb2 import IngestRequest
-from dozer.types_pb2 import Record, Value
+from pydozer.ingest_pb2 import IngestRequest
+from pydozer.types_pb2 import Record, Value
 import polars as pl
-from dozer.api import ApiClient
-from dozer.ingest import IngestClient
+from pydozer.api import ApiClient
+from pydozer.ingest import IngestClient
 from tests.helper import dozer_server, ingestion_client, api_client
-from dozer.ingest_pb2 import IngestRequest
-from dozer.types_pb2 import Record, Value
+from pydozer.ingest_pb2 import IngestRequest
+from pydozer.types_pb2 import Record, Value
 
 def test_api_count(api_client: ApiClient):
     res = api_client.count()

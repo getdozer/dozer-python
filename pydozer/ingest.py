@@ -1,8 +1,8 @@
 import os
 import grpc
-from dozer.helper import describe_services, map_arrow_df, map_record
-from dozer.ingest_pb2_grpc import IngestServiceStub
-from dozer.ingest_pb2 import IngestResponse
+from pydozer.helper import describe_services, map_arrow_df, map_record
+from pydozer.ingest_pb2_grpc import IngestServiceStub
+from pydozer.ingest_pb2 import IngestResponse
 from tqdm import tqdm
 import polars as pl
 
@@ -12,13 +12,13 @@ BATCH_SIZE = 1000
 
 
 class IngestClient:
-    def __init__(self, url=DOZER_INGEST_URL, secure=False):
-        """Ingest client for Dozer
+    """Ingest client for Dozer
 
-        Args:
-            url (str, optional): Ingest Server URL. Defaults to DOZER_INGEST_URL or `0.0.0.0:8085`.
-            secure (bool, optional): Intialize a secure channel. Defaults to False.
-        """
+    Args:
+        url (str, optional): Ingest Server URL. Defaults to DOZER_INGEST_URL or `0.0.0.0:8085`.
+        secure (bool, optional): Intialize a secure channel. Defaults to False.
+    """
+    def __init__(self, url=DOZER_INGEST_URL, secure=False):
         channel = grpc.insecure_channel(url)
         if secure:
             channel = grpc.secure_channel(url)

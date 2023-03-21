@@ -3,8 +3,8 @@ import subprocess
 
 from time import sleep
 
-from dozer.api import ApiClient
-from dozer.ingest import IngestClient
+from pydozer.api import ApiClient
+from pydozer.ingest import IngestClient
 import pytest
 
 
@@ -16,8 +16,8 @@ DOZER_API_URL = "0.0.0.0:7003"
 # Run Dozer in background
 @pytest.fixture(autouse=True, scope="session")
 def dozer_server():
-    which_dozer = shutil.which("dozer")
-    p = subprocess.Popen([which_dozer, "-c", "tests/dozer-config.yaml"], stdout=subprocess.PIPE)
+    which_dozer = shutil.which("pydozer")
+    p = subprocess.Popen([which_dozer, "-c", "tests/pydozer-config.yaml"], stdout=subprocess.PIPE)
     while True:
         line = p.stdout.readline()
         if b'[api] Serving' in line:

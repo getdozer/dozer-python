@@ -87,16 +87,16 @@ ingestion_client.ingest_df_arrow('trips', df, seq_no=1)
 
 Ingest raw records
 ```python
-from dozer.ingest_pb2 import IngestRequest
-from dozer.types_pb2 import Record, Value
+from pydozer.ingest_pb2 import IngestRequest
+from pydozer.types_pb2 import Record, Value
 
 user = IngestRequest(
-                schema_name="users",
-                typ=0,
-                old=None,
-                new=Record(values=[Value(int_value=1), Value(string_value="vivek")]),
-                seq_no=1
-            )
+    schema_name="users",
+    typ=0,
+    old=None,
+    new=Record(values=[Value(int_value=1), Value(string_value="vivek")]),
+    seq_no=1
+)
 ingestor.ingest(user)
 ```
 
