@@ -2,8 +2,8 @@ import io
 from grpc_reflection.v1alpha.proto_reflection_descriptor_database import ProtoReflectionDescriptorDatabase
 from google.protobuf.descriptor_pool import DescriptorPool
 import polars as pl
-from dozer.ingest_pb2 import IngestRequest, IngestArrowRequest
-from dozer.types_pb2 import Record, Value
+from pydozer.ingest_pb2 import IngestRequest, IngestArrowRequest
+from pydozer.types_pb2 import Record, Value
 from decimal import Decimal
 import pyarrow as pa
 import json

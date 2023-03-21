@@ -3,8 +3,8 @@ import subprocess
 
 from time import sleep
 
-from dozer.api import ApiClient
-from dozer.ingest import IngestClient
+from pydozer.api import ApiClient
+from pydozer.ingest import IngestClient
 import pytest
 
 
