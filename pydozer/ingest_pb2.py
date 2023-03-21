@@ -11,7 +11,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-import types_pb2 as types__pb2
+import pydozer.types_pb2 as types__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cingest.proto\x12\x0c\x64ozer.ingest\x1a\x0btypes.proto\"\xae\x01\n\rIngestRequest\x12\x13\n\x0bschema_name\x18\x01 \x01(\t\x12\'\n\x03typ\x18\x02 \x01(\x0e\x32\x1a.dozer.types.OperationType\x12%\n\x03old\x18\x03 \x01(\x0b\x32\x13.dozer.types.RecordH\x00\x88\x01\x01\x12 \n\x03new\x18\x04 \x01(\x0b\x32\x13.dozer.types.Record\x12\x0e\n\x06seq_no\x18\x05 \x01(\rB\x06\n\x04_old\" \n\x0eIngestResponse\x12\x0e\n\x06seq_no\x18\x01 \x01(\r\"\xdb\x01\n\x12IngestArrowRequest\x12\x13\n\x0bschema_name\x18\x01 \x01(\t\x12\x0f\n\x07records\x18\x02 \x01(\x0c\x12\x0e\n\x06seq_no\x18\x03 \x01(\r\x12@\n\x08metadata\x18\x04 \x03(\x0b\x32..dozer.ingest.IngestArrowRequest.MetadataEntry\x1aM\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1c.dozer.ingest.IngestMetadata:\x02\x38\x01\"K\n\x0eIngestMetadata\x12(\n\x03typ\x18\x01 \x01(\x0e\x32\x1b.dozer.ingest.OperationType\x12\x0f\n\x07version\x18\x02 \x01(\r*3\n\rOperationType\x12\n\n\x06INSERT\x10\x00\x12\n\n\x06\x44\x45LETE\x10\x01\x12\n\n\x06UPDATE\x10\x02\x32\xcb\x02\n\rIngestService\x12\x43\n\x06ingest\x12\x1b.dozer.ingest.IngestRequest\x1a\x1c.dozer.ingest.IngestResponse\x12L\n\ringest_stream\x12\x1b.dozer.ingest.IngestRequest\x1a\x1c.dozer.ingest.IngestResponse(\x01\x12N\n\x0cingest_arrow\x12 .dozer.ingest.IngestArrowRequest\x1a\x1c.dozer.ingest.IngestResponse\x12W\n\x13ingest_arrow_stream\x12 .dozer.ingest.IngestArrowRequest\x1a\x1c.dozer.ingest.IngestResponse(\x01\x62\x06proto3')

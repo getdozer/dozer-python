@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import health_pb2 as health__pb2
+import pydozer.health_pb2 as health__pb2
 
 
 class HealthGrpcServiceStub(object):

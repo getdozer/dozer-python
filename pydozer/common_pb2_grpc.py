@@ -2,8 +2,8 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import common_pb2 as common__pb2
-import types_pb2 as types__pb2
+import pydozer.common_pb2 as common__pb2
+import pydozer.types_pb2 as types__pb2
 
 
 class CommonGrpcServiceStub(object):

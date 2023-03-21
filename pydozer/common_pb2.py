@@ -11,7 +11,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-import types_pb2 as types__pb2
+import pydozer.types_pb2 as types__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63ommon.proto\x12\x0c\x64ozer.common\x1a\x0btypes.proto\">\n\x0cQueryRequest\x12\x10\n\x08\x65ndpoint\x18\x01 \x01(\t\x12\x12\n\x05query\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x08\n\x06_query\"\x1e\n\rCountResponse\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"h\n\x0eOnEventRequest\x12$\n\x04type\x18\x01 \x01(\x0e\x32\x16.dozer.types.EventType\x12\x10\n\x08\x65ndpoint\x18\x02 \x01(\t\x12\x13\n\x06\x66ilter\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\t\n\x07_filter\"$\n\x10GetFieldsRequest\x12\x10\n\x08\x65ndpoint\x18\x01 \x01(\t\"X\n\x11GetFieldsResponse\x12\x15\n\rprimary_index\x18\x01 \x03(\x05\x12,\n\x06\x66ields\x18\x02 \x03(\x0b\x32\x1c.dozer.types.FieldDefinition\"i\n\rQueryResponse\x12,\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x1c.dozer.types.FieldDefinition\x12*\n\x07records\x18\x02 \x03(\x0b\x32\x19.dozer.types.RecordWithId\"\x15\n\x13GetEndpointsRequest\")\n\x14GetEndpointsResponse\x12\x11\n\tendpoints\x18\x01 \x03(\t2\xff\x02\n\x11\x43ommonGrpcService\x12@\n\x05\x63ount\x12\x1a.dozer.common.QueryRequest\x1a\x1b.dozer.common.CountResponse\x12@\n\x05query\x12\x1a.dozer.common.QueryRequest\x1a\x1b.dozer.common.QueryResponse\x12\x41\n\x07OnEvent\x12\x1c.dozer.common.OnEventRequest\x1a\x16.dozer.types.Operation0\x01\x12U\n\x0cgetEndpoints\x12!.dozer.common.GetEndpointsRequest\x1a\".dozer.common.GetEndpointsResponse\x12L\n\tgetFields\x12\x1e.dozer.common.GetFieldsRequest\x1a\x1f.dozer.common.GetFieldsResponseb\x06proto3')

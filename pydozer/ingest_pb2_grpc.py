@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import ingest_pb2 as ingest__pb2
+import pydozer.ingest_pb2 as ingest__pb2
 
 
 class IngestServiceStub(object):
