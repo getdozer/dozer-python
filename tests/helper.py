@@ -24,7 +24,7 @@ def dozer_server():
             break
         if b'ERROR' in line:
             exit(1)
-    sleep(0.1)
+    sleep(1)
     yield
     p.terminate()
     p.kill()
