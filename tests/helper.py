@@ -8,9 +8,9 @@ from pydozer.ingest import IngestClient
 import pytest
 
 
-DOZER_INGEST_URL = "0.0.0.0:7001"
-DOZER_INGEST_ARROW_URL = "0.0.0.0:7005"
-DOZER_API_URL = "0.0.0.0:7003"
+DOZER_INGEST_URL = "0.0.0.0:10001"
+DOZER_INGEST_ARROW_URL = "0.0.0.0:10005"
+DOZER_API_URL = "0.0.0.0:10003"
 
 
 # Run Dozer in background
