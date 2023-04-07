@@ -2,12 +2,12 @@ app_name: dozer-ingest-users
 connections:
   - config: !Grpc
       schemas: !Path "tests/trips.json"
-      port: 7001
+      port: 10001
     name: ingest
   - config: !Grpc
       adapter: arrow
       schemas: !Path "tests/trips_arrow.json"
-      port: 7005
+      port: 10005
     name: ingest_arrow
 
 cache_max_map_size: 1073741824
@@ -15,11 +15,11 @@ app_max_map_size: 1073741824
 
 api:
   rest:
-    port: 7002
+    port: 8080
   grpc:
-    port: 7003
+    port: 10003
   app_grpc:
-    port: 7004
+    port: 10004
 sources:
   - name: trips
     table_name: trips

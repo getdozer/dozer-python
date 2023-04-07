@@ -10,6 +10,7 @@ from pydozer.ingest import IngestClient
 from tests.helper import dozer_server, ingestion_client, api_client
 from pydozer.ingest_pb2 import IngestRequest
 from pydozer.types_pb2 import Record, Value
+from time import sleep
 
 def test_api_count(api_client: ApiClient):
     res = api_client.count()
@@ -76,6 +77,8 @@ def test_ingest_query(ingestion_client: IngestClient, api_client: ApiClient):
     )
     res = ingestion_client.ingest_raw(user)
     assert res is not None
+
+    sleep(1)
 
     res = api_client.query()
     assert res is not None
