@@ -18,7 +18,12 @@ class ApiClient:
         url (str, optional): Dozer gRPC URL. Defaults to Env variable DOZER_API_URL or `0.0.0.0:50051`.
         secure (bool, optional): Intialize a secure channel. Defaults to False.
     """
-    def __init__(self, endpoint, url=DOZER_API_URL, secure=False):
+    def __init__(self, endpoint, url=DOZER_API_URL, secure=False, token=None):
+
+        self.metadata = [('authorization', f'Bearer {token}')] if token else None
+        if self.metadata:
+            self.headers = grpc.metadata_call_credentials(self.metadata)
+
         if secure:
             channel = grpc.secure_channel(url)
         else:
@@ -48,9 +53,9 @@ class ApiClient:
         """
 
         health_client = HealthGrpcServiceStub(self.channel)
-        return health_client.healthCheck(HealthCheckRequest(service=service))
+        return health_client.healthCheck(HealthCheckRequest(service=service), metadata=self.metadata)
 
-    def count(self, query: QueryRequest = {}) -> CountResponse:
+    def count(self, query: QueryRequest = {}, token=None) -> CountResponse:
         """Counts the number of records in Dozer cache.
 
         Args:
@@ -63,20 +68,21 @@ class ApiClient:
                 '$after`: `int`, cursor to start from. `$skip` and `$after` cannot be used in the same query
                 `$order_by`: `dict` eg: `{"name": "asc"}` or `{"id": "desc"}`
             Defaults to {}.
+            token (string, optional): A JWT Token
 
         Returns:
             CountResponse: count of records
         """
 
         req = self.get_query_request(query)
+        return self.client.count(req, metadata=self.metadata)
 
-        return self.client.count(req)
-
-    def query(self, query: dict = {}) -> QueryResponse:
+    def query(self, query: dict = {}, token=None) -> QueryResponse:
         """Queries the Dozer cache for records. Response is in the common format.
 
         Args:
             query (dict, optional): Accepts a filter
+            token (string, optional): A JWT Token
             to query only a subset of records. 
             Keys could be 
                 `$filter`: `dict` eg: `{"name": "John"}` or `{"id": { "$gt": 1}}`  
@@ -85,6 +91,7 @@ class ApiClient:
                 '$after`: `int`, cursor to start from. `$skip` and `$after` cannot be used in the same query
                 `$order_by`: `dict` eg: `{"name": "asc"}` or `{"id": "desc"}`
             Defaults to {}.
+            token (string, optional): A JWT Token
 
         Returns:
             QueryResponse: {"fields": fields, "records": records}
@@ -93,18 +100,21 @@ class ApiClient:
         """
 
         req = self.get_query_request(query)
-        return self.client.query(req)
 
-    def on_event(self, request={}):
+        return self.client.query(req, metadata=self.metadata)
+
+    def on_event(self, request={}, token=None):
         """Subscribes to events from Dozer.
 
         Args:
             request (OnEventRequest): Optionally accepts a filter
+            token (string, optional): A JWT Token
         """
         _req = OnEventRequest(endpoint=self.endpoint)
         for key, value in request.items():
             setattr(_req, key, value)
-        return self.client.OnEvent(_req)
+
+        return self.client.OnEvent(_req, metadata=self.metadata)
 
     def get_query_request(self, query: dict = {}) -> QueryRequest:
         """Returns a QueryRequest object
@@ -121,6 +131,7 @@ class ApiClient:
         Returns:
             QueryRequest: QueryRequest object
         """
+
         if query is None or len(query) == 0:
             query = {}
 

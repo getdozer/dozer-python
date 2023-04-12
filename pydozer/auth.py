@@ -41,7 +41,7 @@ class AuthClient:
 
         return describe_services(self.channel)
 
-    def get_auth_token(self, query: dict = {}) -> auth__pb2.GetAuthTokenResponse:
+    def get_auth_token(self, query: dict = None) -> auth__pb2.GetAuthTokenResponse:
         """Get a token for restricted access. Response is in the common format.
 
         Args:
@@ -62,14 +62,14 @@ class AuthClient:
         """
 
         if query is None or len(query) == 0:
-            query = {}
+            query_str = '"All"'
+        else:
+            data = {}
+            for key, value in query.items():
+                data[key] = value
+            query_str = json.dumps(data)
 
-        data = {}
-        for key, value in query.items():
-            data[key] = value
-        query_str = json.dumps(data)
-
-        req = auth__pb2.GetAuthTokenRequest(access_filter="\"All\"")
-
-        return self.client.getAuthToken(req, metadata=self.metadata)
+        req = auth__pb2.GetAuthTokenRequest(access_filter=query_str)
+        response = self.client.getAuthToken(req, metadata=self.metadata)
+        return response.token
 
