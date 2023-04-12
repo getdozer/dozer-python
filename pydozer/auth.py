@@ -20,9 +20,6 @@ class AuthClient:
 
         self.metadata = [('authorization', f'Bearer {token}')]
 
-        # attach the metadata to the channel
-        self.headers = grpc.metadata_call_credentials(self.metadata)
-
         if secure:
             channel = grpc.secure_channel(url)
         else:
@@ -45,7 +42,6 @@ class AuthClient:
         """Get a token for restricted access. Response is in the common format.
 
         Args:
-            access_token (string): A valid token to generate a token with restricted access
             query (dict, optional): Accepts a filter
             to query only a subset of records.
             Keys could be
