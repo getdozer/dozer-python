@@ -13,6 +13,10 @@ connections:
 cache_max_map_size: 1073741824
 app_max_map_size: 1073741824
 
+
+flags:
+  grpc_web: true
+
 api:
   rest:
     port: 8080
@@ -20,6 +24,9 @@ api:
     port: 10003
   app_grpc:
     port: 10004
+  api_security: !Jwt
+    DOZER1337
+
 sources:
   - name: trips
     table_name: trips

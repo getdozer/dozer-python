@@ -3,8 +3,10 @@ import subprocess
 
 from time import sleep
 
+from pydozer.auth import AuthClient
 from pydozer.api import ApiClient
 from pydozer.ingest import IngestClient
+
 import pytest
 
 
@@ -32,7 +34,13 @@ def dozer_server():
 
 @pytest.fixture
 def api_client() -> ApiClient:
-    return ApiClient("users", url=DOZER_API_URL)
+    master_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYWNoZV91c2VyIiwic3ViIjoiYXBpQGRvemVyLmNvbSIsImV4cCI6MTY4MTI4NzcwNDAyNywiYWNjZXNzIjoiQWxsIn0.aD5L6XURIr3hrUp0LzfUQWKHairjK6DDkMlzvnVvzHA'
+
+    client = AuthClient(token=master_token, url=DOZER_API_URL)
+
+    restricted_token = client.get_auth_token()
+
+    return ApiClient("users", url=DOZER_API_URL, token=restricted_token)
 
 
 @pytest.fixture
