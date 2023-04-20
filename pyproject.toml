@@ -3,7 +3,11 @@ name = "pydozer"
 version = "0.1.16"
 description = "Python wrapper for the Dozer API"
 authors = ["Dozer Team <api@getdozer.io>"]
+<<<<<<< Updated upstream
 license = "MIT"
+=======
+license = "Apache-2.0"
+>>>>>>> Stashed changes
 readme = "README.md"
 
 [tool.poetry.dependencies]
