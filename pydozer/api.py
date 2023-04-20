@@ -18,7 +18,10 @@ class ApiClient:
         url (str, optional): Dozer gRPC URL. Defaults to Env variable DOZER_API_URL or `0.0.0.0:50051`.
         secure (bool, optional): Intialize a secure channel. Defaults to False.
     """
-    def __init__(self, endpoint, url=DOZER_API_URL, secure=False):
+    def __init__(self, endpoint, url=DOZER_API_URL, secure=False, token=None):
+
+        self.metadata = [('authorization', f'Bearer {token}')] if token else None
+
         if secure:
             channel = grpc.secure_channel(url)
         else:
@@ -48,7 +51,7 @@ class ApiClient:
         """
 
         health_client = HealthGrpcServiceStub(self.channel)
-        return health_client.healthCheck(HealthCheckRequest(service=service))
+        return health_client.healthCheck(HealthCheckRequest(service=service), metadata=self.metadata)
 
     def count(self, query: QueryRequest = {}) -> CountResponse:
         """Counts the number of records in Dozer cache.
@@ -69,8 +72,7 @@ class ApiClient:
         """
 
         req = self.get_query_request(query)
-
-        return self.client.count(req)
+        return self.client.count(req, metadata=self.metadata)
 
     def query(self, query: dict = {}) -> QueryResponse:
         """Queries the Dozer cache for records. Response is in the common format.
@@ -93,7 +95,8 @@ class ApiClient:
         """
 
         req = self.get_query_request(query)
-        return self.client.query(req)
+
+        return self.client.query(req, metadata=self.metadata)
 
     def on_event(self, request={}):
         """Subscribes to events from Dozer.
@@ -104,7 +107,8 @@ class ApiClient:
         _req = OnEventRequest(endpoint=self.endpoint)
         for key, value in request.items():
             setattr(_req, key, value)
-        return self.client.OnEvent(_req)
+
+        return self.client.OnEvent(_req, metadata=self.metadata)
 
     def get_query_request(self, query: dict = {}) -> QueryRequest:
         """Returns a QueryRequest object
@@ -121,6 +125,7 @@ class ApiClient:
         Returns:
             QueryRequest: QueryRequest object
         """
+
         if query is None or len(query) == 0:
             query = {}
 

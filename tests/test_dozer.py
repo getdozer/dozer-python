@@ -88,3 +88,4 @@ def test_ingest_query(ingestion_client: IngestClient, api_client: ApiClient):
     res = api_client.query({'$limit': 1})
     assert res is not None
     assert len(res.records) >= 1
+
