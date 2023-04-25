@@ -32,7 +32,7 @@ This repository is a python wrapper over gRPC APIs that are automatically when y
 poetry add git+ssh://git@github.com:getdozer/dozer-python.git#main
 
 # or 
-pip install getdozer/dozer-python
+pip install pydozer
 ```
 ## Dependencies
 
