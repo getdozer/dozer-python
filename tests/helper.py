@@ -22,7 +22,8 @@ def dozer_server():
     p = subprocess.Popen([which_dozer, "-c", "tests/dozer-config.yaml"], stdout=subprocess.PIPE)
     while True:
         line = p.stdout.readline()
-        if b'[api] Serving' in line:
+        print(line)
+        if b'Starting Rest Api Server' in line:
             break
         if b'ERROR' in line:
             exit(1)
