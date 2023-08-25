@@ -18,9 +18,14 @@ class ApiClient:
         url (str, optional): Dozer gRPC URL. Defaults to Env variable DOZER_API_URL or `0.0.0.0:50051`.
         secure (bool, optional): Intialize a secure channel. Defaults to False.
     """
-    def __init__(self, endpoint, url=DOZER_API_URL, secure=False, token=None):
+    def __init__(self, endpoint, url=DOZER_API_URL, app_id=None, secure=False, token=None):
 
-        self.metadata = [('authorization', f'Bearer {token}')] if token else None
+        self.metadata = []
+
+        if app_id:
+            self.metadata = [('x-dozer-app-id', app_id)]
+        if token:
+            self.metadata.insert(0, ('authorization', f'Bearer {token}'))
 
         if secure:
             channel = grpc.secure_channel(url, grpc.ssl_channel_credentials())

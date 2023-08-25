@@ -18,7 +18,10 @@ class IngestClient:
         url (str, optional): Ingest Server URL. Defaults to DOZER_INGEST_URL or `0.0.0.0:8085`.
         secure (bool, optional): Intialize a secure channel. Defaults to False.
     """
-    def __init__(self, url=DOZER_INGEST_URL, secure=False):
+    def __init__(self, url=DOZER_INGEST_URL, app_id=None, secure=False):
+
+        self.metadata = [('x-dozer-connector-app-id', app_id)] if app_id else None
+
         channel = grpc.insecure_channel(url)
         if secure:
             channel = grpc.secure_channel(url, grpc.ssl_channel_credentials())
@@ -46,14 +49,14 @@ class IngestClient:
         Args:
             request (IngestRequest): 
         """
-        return self.ingestor.ingest(request)
+        return self.ingestor.ingest(request, metadata=self.metadata)
 
     def ingest_raw_stream(self, generator) -> IngestResponse:
         """Ingest a stream in Common Format into Dozer
         Args:
             generator: Generator function that yields IngestRequest
         """
-        return self.ingestor.ingest(generator)
+        return self.ingestor.ingest(generator, metadata=self.metadata)
 
     def ingest_df(self, schema_name, df, seq_no=1) -> IngestResponse:
         """Ingest a pandas dataframe into Dozer using ingest stream
@@ -69,7 +72,7 @@ class IngestClient:
                 yield rec
         print("Ingesting via stream...")
 
-        return self.ingestor.ingest_stream(get_messages(seq_no))
+        return self.ingestor.ingest_stream(get_messages(seq_no), metadata=self.metadata)
 
     def ingest_df_arrow(self, schema_name, df, batch_size=BATCH_SIZE, seq_no=1) -> IngestResponse:
         """Ingest a dataframe into Dozer in Arrow Format
@@ -94,4 +97,4 @@ class IngestClient:
                 pbar.close()
         print("Ingesting via stream in Arrow Format...")
 
-        return self.ingestor.ingest_arrow_stream(get_messages(seq_no))
+        return self.ingestor.ingest_arrow_stream(get_messages(seq_no), metadata=self.metadata)

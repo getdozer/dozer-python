@@ -31,30 +31,23 @@ sources:
   - name: trips
     table_name: trips
     connection: !Ref ingest
-    columns:
   - name: trips_arrow
     table_name: trips_arrow
     connection: !Ref ingest_arrow
-    columns:
   - name: users
     table_name: users
     connection: !Ref ingest
-    columns:
 
 endpoints:
   - name: trips
     path: /trips
     table_name: trips
-    index:
-      primary_key:
+
   - name: trips_arrow
     path: /trips_arrow
     table_name: trips_arrow
-    index:
-      primary_key:
 
   - name: users
     path: /users
     table_name: users
-    index:
-      primary_key:
+
