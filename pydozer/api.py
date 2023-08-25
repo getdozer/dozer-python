@@ -23,7 +23,7 @@ class ApiClient:
         self.metadata = [('authorization', f'Bearer {token}')] if token else None
 
         if secure:
-            channel = grpc.secure_channel(url)
+            channel = grpc.secure_channel(url, grpc.ssl_channel_credentials())
         else:
             channel = grpc.insecure_channel(url)
         self.endpoint = endpoint

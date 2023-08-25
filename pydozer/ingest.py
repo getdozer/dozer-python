@@ -21,7 +21,7 @@ class IngestClient:
     def __init__(self, url=DOZER_INGEST_URL, secure=False):
         channel = grpc.insecure_channel(url)
         if secure:
-            channel = grpc.secure_channel(url)
+            channel = grpc.secure_channel(url, grpc.ssl_channel_credentials())
         self.channel = channel
         self.ingestor = IngestServiceStub(channel)
 
