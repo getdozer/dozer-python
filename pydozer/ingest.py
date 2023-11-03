@@ -41,7 +41,7 @@ class IngestClient:
                 schema_name="users",
                 typ=0,
                 old=None,
-                new=Record(values=[Value(int_value=1), Value(string_value="vivek")]),
+                new=[Value(int_value=1), Value(string_value="vivek")],
                 seq_no=1
             )
             ingestor.ingest(user)

@@ -13,6 +13,14 @@ enum EventType {
   DELETE_ONLY = 3; // Only DELETE events.
 }
 
+// Event filter.
+message EventFilter {
+  // The event type to subscribe to.
+  dozer.types.EventType type = 1;
+  // JSON filter string.
+  optional string filter = 3;
+}
+
 // The event types.
 enum OperationType {
   INSERT = 0; // INSERT operation.
@@ -28,8 +36,6 @@ message Operation {
   optional Record old = 2;
   // New record data.
   Record new = 3;
-  // New record id, only applicable for INSERT type.
-  optional uint64 new_id = 4;
   // Name of the endpoint that this event is from.
   string endpoint_name = 5;
 }
@@ -38,16 +44,10 @@ message Operation {
 message Record {
   // The list of field values.
   repeated Value values = 1;
+  // The record id in cache.
+  uint64 id = 2;
   // Records with same primary key will have increasing version.
-  uint32 version = 2;
-}
-
-// A record with its id in cache.
-message RecordWithId {
-  // The record id.
-  uint64 id = 1;
-  // The record data.
-  Record record = 2;
+  uint32 version = 3;
 }
 
 // Supported data types in Dozer.
@@ -125,4 +125,15 @@ message Value {
     DurationType duration_value = 13;       // Duration type.
     google.protobuf.Value json_value = 14;  // JSON type.
   };
+}
+message SchemasResponse {
+  map<string, Schema> schemas = 1;
+  map<string, string> errors = 2;
+}
+
+message Schema  {
+  // The list of indexes of the keys that are used as the primary index.
+  repeated int32 primary_index = 1;
+  // The list of field definitions.
+  repeated FieldDefinition fields = 2;
 }

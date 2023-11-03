@@ -43,8 +43,7 @@ def test_ingest(ingestion_client: IngestClient):
         schema_name="users",
         typ=0,
         old=None,
-        new=Record(values=[Value(int_value=1),
-                   Value(string_value="superman")]),
+        new=[Value(int_value=1), Value(string_value="superman")],
         seq_no=1
     )
     res = ingestion_client.ingest_raw(user)
@@ -71,8 +70,7 @@ def test_ingest_query(ingestion_client: IngestClient, api_client: ApiClient):
         schema_name="users",
         typ=0,
         old=None,
-        new=Record(values=[Value(int_value=1),
-                   Value(string_value="superman")]),
+        new=[Value(int_value=1), Value(string_value="superman")],
         seq_no=1
     )
     res = ingestion_client.ingest_raw(user)
