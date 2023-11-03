@@ -124,19 +124,18 @@ def map_value(col, typ) -> Value:
         return Value()
 
 
-def map_record(schema_name: str, row: list, types, idx) -> Record:
+def map_record(schema_name: str, row: list, types, idx) -> IngestRequest:
     values = []
     assert len(row) == len(types), "Row and types must be the same length"
     for i in range(len(row)):
         val = map_value(row[i], types[i])
         values.append(val)
 
-    rec = Record(values=values, version=1)
     return IngestRequest(
         schema_name=schema_name,
         typ=0,
         old=None,
-        new=rec,
+        new=values,
         seq_no=idx
     )
 

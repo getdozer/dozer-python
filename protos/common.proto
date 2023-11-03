@@ -54,12 +54,8 @@ message CountResponse {
 
 // Request for `OnEvent`.
 message OnEventRequest {
-  // The event type to subscribe to.
-  dozer.types.EventType type = 1;
-  // The name of the endpoint to subscribe to.
-  string endpoint = 2;
-  // JSON filter string.
-  optional string filter = 3;
+  // The endpoints to subscribe to. Key is the endpoint name, value is the filter.
+  map<string, dozer.types.EventFilter> endpoints = 1;
 }
 
 // Request for `getFields`.
@@ -81,7 +77,7 @@ message QueryResponse {
   // The list of field definitions.
   repeated dozer.types.FieldDefinition fields = 1;
   // The list of record data.
-  repeated dozer.types.RecordWithId records = 2;
+  repeated dozer.types.Record records = 2;
 }
 
 // Request for `getEndpoints`.

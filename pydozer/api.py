@@ -6,6 +6,7 @@ from pydozer.health_pb2_grpc import HealthGrpcServiceStub
 from pydozer.common_pb2_grpc import CommonGrpcServiceStub
 from pydozer.common_pb2 import QueryRequest, OnEventRequest, QueryResponse, CountResponse
 from pydozer.health_pb2 import HealthCheckRequest, HealthCheckResponse
+from pydozer.types_pb2 import EventFilter
 
 DOZER_API_URL = os.getenv("DOZER_API_URL", "0.0.0.0:50051")
 
@@ -109,7 +110,9 @@ class ApiClient:
         Args:
             request (OnEventRequest): Optionally accepts a filter
         """
-        _req = OnEventRequest(endpoint=self.endpoint)
+        _req = OnEventRequest(endpoints={
+            self.endpoint: EventFilter()
+        })
         for key, value in request.items():
             setattr(_req, key, value)
 
